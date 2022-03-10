@@ -1,3 +1,80 @@
+<template>
+  <draggable
+    v-bind="dragOptions"
+    tag="div"
+    class="item-container"
+    :value="value"
+    @input="emitter"
+    @end="end"
+  >
+    <div class="item-group" :key="category.id" v-for="category in value">
+        <div class="item">{{ category.title }}</div>
+        <nested class="item-sub" :boards="category.boards" :category="category"  />
+    </div>
+  </draggable>
+</template>
+<script>
+import draggable from "@/vuedraggable";
+import Nested from "./nested.vue";
+import Order from './Modules/OrderItems';
+
+export default {
+  name: "nested-test",
+  components: {
+    draggable,
+    Nested
+  },
+
+  props: {
+    /**
+     * if you use v-model="elements" in parent component. 
+     * You will get the value props. 
+     * and it will be sync two way as it v-model.
+     * Normally we can do this opearation with props one way parent to child.
+     * But v-model supply us two way data binding.
+     * https://stackoverflow.com/a/47137462/13946201
+     */
+    value: {
+      required: false,
+      type: Array,
+      default: null
+    },
+
+  },
+  
+  computed: {
+    dragOptions() {
+      return {
+        animation: 0,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    },
+  },
+  
+  methods: {
+    emitter(value) {
+      this.$emit("input", value);
+    },
+    end:function(evt){
+      let index = evt.newIndex;
+      let categories = this.value;
+      let className ='category';
+      
+      let category = Order.orderedItems(categories,index,className);
+      var resultArray = [];
+      resultArray.push(category);
+      this.$store.dispatch("nested/postCommands",resultArray);
+      
+
+    },
+  },
+  
+};
+</script>
+
+
 <style scoped>
 .item-container {
   max-width: 20rem;
@@ -13,84 +90,3 @@
   margin: 0 0 0 1rem;
 }
 </style>
-
-<template>
-  <draggable
-    v-bind="dragOptions"
-    tag="div"
-    class="item-container"
-    :list="list"
-    :value="value"
-    :move="checkMove"
-    @input="emitter"
-    @change="change"
-  >
-    <div class="item-group" :key="el.id" v-for="el in realValue">
-      <div class="item">{{ el.title }}</div>
-      <bayram class="item-sub" :list="el.boards"   />
-    </div>
-  </draggable>
-</template>
-
-<script>
-import draggable from "@/vuedraggable";
-export default {
-  name: "bayram",
-  methods: {
-    emitter(value) {
-      this.$emit("input", value);
-    },
-
-    change(){
-    const categories = this.$store.state.nested.categories;
-      categories.map((item,index)=>{
-        item.order=index+1;
-        if(item.boards !== ''){
-         item.boards.map((board,index)=>{
-           board.order=index+1;
-           board.category_id=item.id;
-          console.log(board.title);
-         })
-          }
-      })
-            this.$store.dispatch("nested/postCategories",categories);
-
-    },
-
-     checkMove: function(e) {
-     //window.console.log("Future index: " + e.relatedContext.component);
-    }
-  },
-  components: {
-    draggable
-  },
-
-  computed: {
-    dragOptions() {
-      return {
-        animation: 0,
-        group: "description",
-        disabled: false,
-        ghostClass: "ghost"
-      };
-    },
-    // this.value when input = v-model
-    // this.list  when input != v-model
-    realValue() {
-      return this.value ? this.value : this.list;
-    }
-  },
-  props: {
-    value: {
-      required: false,
-      type: Array,
-      default: null
-    },
-    list: {
-      required: false,
-      type: Array,
-      default: null
-    }
-  }
-};
-</script>
