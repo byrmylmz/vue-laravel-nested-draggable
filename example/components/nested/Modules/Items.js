@@ -21,7 +21,7 @@ export default class Items {
     
     if (this.moved) {
       const firstFeed = {
-        command: this.className + "_moved",
+        type: this.className + "_moved",
         items: {
           item_id: this.evt.item._underlying_vm_.id,
           category_id: this.category.id
@@ -52,8 +52,8 @@ export default class Items {
         this.className
       );
       this.result.push(firstFeed);
-      store.dispatch("nested/postCommands", this.result);
-      console.log(this.result);
+      // store.dispatch("nested/postCommands", this.result);
+      // console.log(this.result);
     }
   }
   

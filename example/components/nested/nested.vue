@@ -46,7 +46,7 @@ export default {
       const command = new Items(evt, category, moved, boardProps, className,result);
       command.getItems();
 
-      //this.array.push('ekle');
+    
       console.log(this.array);
       if(this.start){
         console.log('adedd');
