@@ -28,8 +28,6 @@ export default {
     this.$store.dispatch("nested/sync");
   },
 
-
-
   computed: {
     ...mapGetters("nested", ["categories"]),
 
