@@ -8,15 +8,15 @@
     @end="end"
   >
     <div class="item-group" :key="category.id" v-for="category in value">
-        <div class="item">{{ category.title }}</div>
-        <nested class="item-sub" :boards="category.boards" :category="category"  />
+      <div class="item">{{ category.title }}</div>
+      <nested class="item-sub" :boards="category.boards" :category="category" />
     </div>
   </draggable>
 </template>
 <script>
 import draggable from "@/vuedraggable";
 import Nested from "./nested.vue";
-import Order from './Modules/OrderItems';
+import Order from "./Modules/OrderItems";
 
 export default {
   name: "nested-test",
@@ -27,8 +27,8 @@ export default {
 
   props: {
     /**
-     * if you use v-model="elements" in parent component. 
-     * You will get the value props. 
+     * if you use v-model="elements" in parent component.
+     * You will get the value props.
      * and it will be sync two way as it v-model.
      * Normally we can do this opearation with props one way parent to child.
      * But v-model supply us two way data binding.
@@ -38,10 +38,9 @@ export default {
       required: false,
       type: Array,
       default: null
-    },
-
+    }
   },
-  
+
   computed: {
     dragOptions() {
       return {
@@ -50,30 +49,26 @@ export default {
         disabled: false,
         ghostClass: "ghost"
       };
-    },
+    }
   },
-  
+
   methods: {
     emitter(value) {
       this.$emit("input", value);
     },
-    end:function(evt){
+    end: function(evt) {
       let index = evt.newIndex;
       let categories = this.value;
-      let className ='category';
-      
-      let category = Order.orderedItems(categories,index,className);
+      let className = "category";
+
+      let category = Order.orderedItems(categories, index, className);
       var resultArray = [];
       resultArray.push(category);
-      this.$store.dispatch("nested/postCommands",resultArray);
-      
-
-    },
-  },
-  
+      this.$store.dispatch("nested/postCommands", resultArray);
+    }
+  }
 };
 </script>
-
 
 <style scoped>
 .item-container {

@@ -1,16 +1,17 @@
 import Vuex from "vuex";
 import Vue from "vue";
 import CategoriesService from "../services/CategoriesService";
+import SyncServices from "../services/SyncServices";
 
 Vue.use(Vuex);
 
 export const nested = {
   namespaced: true,
   state: {
-    newCategories:'',
-    moved:false,
-    categories: [],
-  
+    newCategories: "",
+    moved: false,
+    result:[],
+    categories: []
   },
 
   mutations: {
@@ -23,13 +24,17 @@ export const nested = {
       state.categories = payload;
     },
 
-    newCategories:(state, payload)=>{
-      state.newCategories=payload;
+    newCategories: (state, payload) => {
+      state.newCategories = payload;
     },
-    moved:(state,payload)=>{
-      state.moved=payload;
+
+    moved: (state, payload) => {
+      state.moved = payload;
     },
-    
+
+    result: (state, payload) => {
+      state.result = payload;
+    }
   },
 
   actions: {
@@ -39,7 +44,7 @@ export const nested = {
     },
 
     postCommands: ({ commit }, payload) => {
-      CategoriesService.postCommands(payload).then((response) => {
+      CategoriesService.postCommands(payload).then(response => {
         console.log("nested-store.js / actions/ postCommands");
       });
     },
@@ -49,12 +54,24 @@ export const nested = {
         commit("categories", response.data.data.categories);
       });
     },
-    newCategories:({commit},payload)=>{
-     commit("newCategories",payload)
+
+    sync(){
+      SyncServices.sync().then(response=>{
+      return response.data.data
+      })
     },
-    moved:({commit},payload)=>{
-     commit("moved",payload)
+
+    newCategories: ({ commit }, payload) => {
+      commit("newCategories", payload);
     },
+
+    moved: ({ commit }, payload) => {
+      commit("moved", payload);
+    },
+
+    result: ({ commit }, payload) => {
+      commit("result", payload);
+    }
   },
 
   getters: {
@@ -66,6 +83,9 @@ export const nested = {
     },
     moved: state => {
       return state.moved;
+    },
+    result: state => {
+      return state.result;
     }
   }
 };

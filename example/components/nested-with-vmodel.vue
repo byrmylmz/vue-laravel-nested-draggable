@@ -1,9 +1,13 @@
 <template>
-    <div class="justify-content-between row ">
-      <nested-test class="col-8" v-model="elements"  />
-      <raw-displayer class="col-4" :title="'Get Data'" :value="elements" />
-     
-    </div>
+<div>
+  <div class="justify-content-between row ">
+   
+  </div>
+  <div class="justify-content-between row ">
+    <nested-test class="col-8" v-model="elements" />
+    <raw-displayer class="col-4" :title="'Get Data'" :value="elements" />
+  </div>
+</div>
 </template>
 
 <script>
@@ -21,7 +25,10 @@ export default {
   },
   created() {
     this.$store.dispatch("nested/getCategories");
+    this.$store.dispatch("nested/sync");
   },
+
+
 
   computed: {
     ...mapGetters("nested", ["categories"]),
@@ -34,6 +41,6 @@ export default {
         this.$store.dispatch("nested/updateElements", value);
       }
     }
-  },
-  };
+  }
+};
 </script>
