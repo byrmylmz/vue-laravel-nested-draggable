@@ -5,8 +5,8 @@ export default class Order {
     let countUpItems = Count.upItems(boards, newIndex);
     let countDownItems = Count.downItems(boards, newIndex);
     //----------------------------------------------
-    //console.log("Up Item Numbers " + countUpItems);
-    //console.log("Down Item Numbers " + countDownItems);
+    console.log("Up Item Numbers " + countUpItems);
+    console.log("Down Item Numbers " + countDownItems);
     //----------------------------------------------
 
     if (countUpItems < countDownItems) {

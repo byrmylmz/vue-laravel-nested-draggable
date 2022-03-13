@@ -17,7 +17,6 @@ export default class Items {
     this.result = result;
   }
   getItems() {
-    //console.log(this.result);
     
     if (this.moved) {
       const firstFeed = {
@@ -30,7 +29,6 @@ export default class Items {
 
       this.result.push(firstFeed);
 
-
       const secondFeed = Order.orderedItems(
         this.category.boards,
         this.evt.newIndex,
@@ -38,13 +36,9 @@ export default class Items {
       );
 
       this.result.push(secondFeed);
-
       store.dispatch("nested/moved", false);
       store.dispatch("nested/result",this.result)
 
-       // console.log(this.result);
-
-      
     } else {
       const firstFeed = Order.orderedItems(
         this.boards,
@@ -52,8 +46,6 @@ export default class Items {
         this.className
       );
       this.result.push(firstFeed);
-      // store.dispatch("nested/postCommands", this.result);
-      // console.log(this.result);
     }
   }
   
