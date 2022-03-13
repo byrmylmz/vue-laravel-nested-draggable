@@ -42,30 +42,26 @@ export default {
       let result = this.result;
       let boardProps = this.boards;
       let className = "board";
-    
+
       const command = new Items(evt, category, moved, boardProps, className,result);
       command.getItems();
-
     
-      console.log(this.array);
       if(this.start){
-        console.log('adedd');
+          console.log('adedd');
           this.start=1;
       }else{
-      this.start=1;
-      setTimeout(()=>{
-        console.log('dispatch and cleaned');
-        this.$store.dispatch("nested/postCommands",this.result)
-        this.$store.dispatch("nested/result",[])
-        this.start=0;
-        },2000)
+          this.start=1;
+          setTimeout(()=>{
+            console.log('dispatch and cleaned');
+            this.$store.dispatch("nested/postCommands",this.result)
+            this.$store.dispatch("nested/result",[])
+            this.start=0;
+            },2000)
       }
-      
       console.log(this.result);
-      
-   
     }
   },
+
   computed: {
     ...mapGetters("nested", ["newCategories", "moved","result"]),
     dragOptions() {
